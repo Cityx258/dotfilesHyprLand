@@ -1,0 +1,36 @@
+# ── Layout ──
+width=320
+height=100
+margin=12
+padding=12
+border-size=1
+border-radius=10
+
+# ── Colors (nature green theme) ──
+background-color=#0f160fdd
+text-color=#c8e6c0
+border-color=#5a9e4a55
+progress-color=over #5a9e4a33
+
+# ── Typography ──
+font=JetBrainsMono Nerd Font 12
+
+# ── Behavior ──
+default-timeout=5000
+ignore-timeout=0
+max-visible=5
+sort=-time
+
+# ── Position ──
+anchor=top-right
+
+# ── Urgency: low ──
+[urgency=low]
+border-color=#3a6e3a55
+text-color=#7aab6a
+
+# ── Urgency: high ──
+[urgency=high]
+border-color=#e05c4a99
+text-color=#ff8070
+background-color=#1a0f0fdd

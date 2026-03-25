@@ -1,0 +1,85 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 36,
+    "spacing": 4,
+    "margin-top": 6,
+    "margin-left": 12,
+    "margin-right": 12,
+
+    "modules-left": [
+        "hyprland/workspaces",
+        "hyprland/window"
+    ],
+
+    "modules-center": [
+        "clock"
+    ],
+
+    "modules-right": [
+        "pulseaudio",
+        "cpu",
+        "memory",
+        "tray"
+    ],
+
+    "hyprland/workspaces": {
+        "format": "{id}",
+        "on-click": "activate",
+        "sort-by-number": true
+    },
+
+    "hyprland/window": {
+        "max-length": 50,
+        "separate-outputs": true
+    },
+
+    "clock": {
+        "format": " {:%H:%M}",
+        "format-alt": " {:%A, %B %d %Y}",
+        "tooltip-format": "<tt>{calendar}</tt>"
+    },
+
+    "cpu": {
+        "format": " {usage}%",
+        "interval": 2,
+        "tooltip": false
+    },
+
+    "memory": {
+        "format": " {used:0.1f}G",
+        "interval": 5
+    },
+
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": " muted",
+        "format-icons": {
+            "default": ["", "", ""]
+        },
+        "on-click": "pavucontrol",
+        "scroll-step": 5
+    },
+
+    "network": {
+        "format-wifi": " {essid}",
+        "format-ethernet": " {ipaddr}",
+        "format-disconnected": " disconnected",
+        "tooltip-format": "{signalStrength}% signal\n{ipaddr}",
+        "interval": 5
+    },
+
+    "battery": {
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-icons": ["", "", "", "", ""],
+        "states": {
+            "warning": 30,
+            "critical": 15
+        }
+    },
+
+    "tray": {
+        "spacing": 8
+    }
+}

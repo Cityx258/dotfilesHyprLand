@@ -1,0 +1,92 @@
+* {
+    bg:         rgba(15, 22, 15, 0.8);
+    bg-alt:     rgba(25, 38, 22, 0.8);
+    bg-hover:   rgba(40, 65, 35, 0.8);
+    border-col: rgba(90, 158, 74, 0.8);
+    fg:         #c8e6c0;
+    fg-dim:     #5a7a52;
+    accent:     #88c057;
+    urgent:     #e05c4a;
+
+    background-color:   transparent;
+    text-color:         @fg;
+    border:             0;
+    margin:             0;
+    padding:            0;
+    spacing:            0;
+}
+
+window {
+    background-color:   @bg;
+    border:             1px solid;
+    border-color:       @border-col;
+    border-radius:      14px;
+    width:              480px;
+    padding:            12px;
+}
+
+mainbox {
+    background-color:   transparent;
+    children:           [ inputbar, listview ];
+    spacing:            10px;
+}
+
+inputbar {
+    background-color:   @bg-alt;
+    border-radius:      10px;
+    padding:            10px 14px;
+    spacing:            10px;
+    children:           [ prompt, entry ];
+}
+
+prompt {
+    background-color:   transparent;
+    text-color:         @accent;
+    font:               "JetBrainsMono Nerd Font 13";
+}
+
+entry {
+    background-color:   transparent;
+    text-color:         @fg;
+    placeholder:        "Search...";
+    placeholder-color:  @fg-dim;
+    cursor:             text;
+}
+
+listview {
+    background-color:   transparent;
+    columns:            1;
+    lines:              8;
+    spacing:            4px;
+    scrollbar:          false;
+}
+
+element {
+    background-color:   transparent;
+    border-radius:      8px;
+    padding:            8px 12px;
+    spacing:            10px;
+    children:           [ element-icon, element-text ];
+    orientation:        horizontal;
+}
+
+element selected {
+    background-color:   @bg-hover;
+    border:             1px solid;
+    border-color:       @border-col;
+}
+
+element-icon {
+    background-color:   transparent;
+    size:               22px;
+}
+
+element-text {
+    background-color:   transparent;
+    text-color:         @fg;
+    vertical-align:     0.5;
+}
+
+element-text selected {
+    text-color:         @accent;
+}
