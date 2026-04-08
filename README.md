@@ -7,6 +7,12 @@ A nature-themed Hyprland rice for Arch Linux. Forest greens, blur, smooth animat
 ![License](https://img.shields.io/badge/License-MIT-88c057?style=flat-square)
 
 ---
+## 📸 Screenshots
+
+![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260408-192908.png)
+![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260408-193608.png)
+![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260408-193805.png)
+
 
 ## 📦 Packages
 
