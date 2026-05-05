@@ -56,6 +56,7 @@ yay -S adw-gtk3 better-miku-cursor candy-icons
 │   └── style.css           # Bar styling
 ├── rofi/
 │   ├── config.rasi         # Rofi behavior & font
+│   ├── powerMenu.sh         	# PowerMenu script
 │   └── theme.rasi          # Custom theme
 ├── kitty/
 │   └── kitty.conf          # Terminal colors & font
@@ -158,6 +159,8 @@ Hyprland
 | `XF86Audio*` | Volume / mute / mic |
 | `XF86Brightness*` | Brightness |
 | `XF86Media*` | Playerctl (play/pause/next/prev) |
+| `CTRL + ALT + DELETE` | Power Menu |
+
 
 ---
 
