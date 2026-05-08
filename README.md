@@ -28,13 +28,14 @@ sudo pacman -S hyprland waybar rofi kitty mako \
                papirus-icon-theme adw-gtk-theme \
                fastfetch grim slurp \
                playerctl brightnessctl dolphin \
+               networkmanager bluez bluez-utils \
                ttf-jetbrains-mono-nerd noto-fonts
 
 # AUR (use yay or paru)
 yay -S adw-gtk3 better-miku-cursor candy-icons
 ```
 
-> **Note:** `swww` is used for wallpaper rendering. `better-miku-cursor` and `candy-icons` are AUR packages.
+> **Note:** `swww` is used for wallpaper rendering. `networkmanager` provides `nmcli` for the Wi-Fi menu. `bluez`/`bluez-utils` provide `bluetoothctl` for the Bluetooth menu. `better-miku-cursor` and `candy-icons` are AUR packages.
 
 ---
 
@@ -57,7 +58,10 @@ yay -S adw-gtk3 better-miku-cursor candy-icons
 │   └── style.css           # Bar styling
 ├── rofi/
 │   ├── config.rasi         # Rofi behavior & font
-│   ├── powerMenu.sh         	# PowerMenu script
+│   ├── PowerMenu.sh        # Power menu (lock, reboot, shutdown)
+│   ├── Bluetooth.sh        # Bluetooth device manager
+│   ├── WallpaperSwapper.sh # Live wallpaper picker
+│   ├── Wifi.sh             # Wi-Fi network selector
 │   └── theme.rasi          # Custom theme
 ├── kitty/
 │   └── kitty.conf          # Terminal colors & font
@@ -107,7 +111,13 @@ cp -r qt5ct       ~/.config/qt5ct
 cp -r qt6ct       ~/.config/qt6ct
 ```
 
-### 4. Set up your wallpaper
+### 4. Make rofi scripts executable
+
+```bash
+chmod +x ~/.config/rofi/*.sh
+```
+
+### 5. Set up your wallpaper
 
 The config expects a wallpaper at `~/Wallpapers/FrierenForest.jpeg`. Either put your wallpaper there or edit `~/.config/hypr/autostart.conf` to point to your own:
 
@@ -115,7 +125,7 @@ The config expects a wallpaper at `~/Wallpapers/FrierenForest.jpeg`. Either put 
 exec-once = swww img ~/Wallpapers/YourWallpaper.jpg
 ```
 
-### 5. Set up fastfetch image (optional)
+### 6. Set up fastfetch image (optional)
 
 The fastfetch config uses a custom image via `kitty-direct`. Either place your image at the path in the config or update it:
 
@@ -123,11 +133,11 @@ The fastfetch config uses a custom image via `kitty-direct`. Either place your i
 "source": "/home/YOUR_USERNAME/Fastfetch-Images/your-image.png"
 ```
 
-### 6. Apply Qt theming
+### 7. Apply Qt theming
 
 Open `qt5ct` and `qt6ct` and set the style to **Kvantum**. Then open `kvantummanager` and apply a theme.
 
-### 7. Log in to Hyprland
+### 8. Log in to Hyprland
 
 Select Hyprland from your display manager, or launch it with:
 
@@ -145,8 +155,10 @@ Hyprland
 | `Super + A` | App launcher (Rofi) |
 | `Super + E` | File manager (Dolphin) |
 | `Super + Q` | Close window |
+| `Super + M` | Exit Hyprland |
 | `Super + W` | Toggle floating |
 | `Super + J` | Toggle split |
+| `Super + P` | Pseudo (dwindle layout) |
 | `Alt + Return` | Fullscreen |
 | `Super + 1–0` | Switch workspace |
 | `Super + Shift + 1–0` | Move window to workspace |
@@ -160,7 +172,10 @@ Hyprland
 | `XF86Audio*` | Volume / mute / mic |
 | `XF86Brightness*` | Brightness |
 | `XF86Media*` | Playerctl (play/pause/next/prev) |
-| `CTRL + ALT + DELETE` | Power Menu |
+| `Ctrl + Alt + Delete` | Power menu |
+| `Super + Shift + W` | Wallpaper swapper |
+| `Super + Shift + N` | Wi-Fi menu |
+| `Super + Shift + B` | Bluetooth menu |
 
 
 ---
