@@ -22,7 +22,7 @@ Install everything you need in one shot:
 ```bash
 # Core
 sudo pacman -S hyprland waybar rofi kitty mako \
-               swww polkit-gnome gnome-keyring \
+               awww polkit-gnome gnome-keyring \
                pipewire wireplumber pavucontrol \
                qt5ct qt6ct kvantum-qt5 kvantum \
                papirus-icon-theme adw-gtk-theme \
@@ -35,7 +35,7 @@ sudo pacman -S hyprland waybar rofi kitty mako \
 yay -S adw-gtk3 better-miku-cursor candy-icons
 ```
 
-> **Note:** `swww` is used for wallpaper rendering. `networkmanager` provides `nmcli` for the Wi-Fi menu. `bluez`/`bluez-utils` provide `bluetoothctl` for the Bluetooth menu. `better-miku-cursor` and `candy-icons` are AUR packages.
+> **Note:** `awww` is used for wallpaper rendering. `better-miku-cursor` and `candy-icons` are AUR packages.
 
 ---
 
@@ -46,7 +46,7 @@ yay -S adw-gtk3 better-miku-cursor candy-icons
 ├── hypr/
 │   ├── hyprland.conf       # Entry point — sources all modules
 │   ├── animations.conf     # Window & workspace animations
-│   ├── autostart.conf      # Startup apps (waybar, mako, swww, keyring)
+│   ├── autostart.conf      # Startup apps (waybar, mako, awww, keyring)
 │   ├── environment.conf    # Env vars (Wayland, QT, GTK, cursor)
 │   ├── input.conf          # Keyboard, mouse, touchpad
 │   ├── keybinds.conf       # All keybindings
@@ -59,9 +59,7 @@ yay -S adw-gtk3 better-miku-cursor candy-icons
 ├── rofi/
 │   ├── config.rasi         # Rofi behavior & font
 │   ├── PowerMenu.sh        # Power menu (lock, reboot, shutdown)
-│   ├── Bluetooth.sh        # Bluetooth device manager
 │   ├── WallpaperSwapper.sh # Live wallpaper picker
-│   ├── Wifi.sh             # Wi-Fi network selector
 │   └── theme.rasi          # Custom theme
 ├── kitty/
 │   └── kitty.conf          # Terminal colors & font
@@ -122,7 +120,7 @@ chmod +x ~/.config/rofi/*.sh
 The config expects a wallpaper at `~/Wallpapers/FrierenForest.jpeg`. Either put your wallpaper there or edit `~/.config/hypr/autostart.conf` to point to your own:
 
 ```ini
-exec-once = swww img ~/Wallpapers/YourWallpaper.jpg
+exec-once = awww img ~/Wallpapers/YourWallpaper.jpg
 ```
 
 ### 6. Set up fastfetch image (optional)
@@ -174,8 +172,6 @@ Hyprland
 | `XF86Media*` | Playerctl (play/pause/next/prev) |
 | `Ctrl + Alt + Delete` | Power menu |
 | `Super + Shift + W` | Wallpaper swapper |
-| `Super + Shift + N` | Wi-Fi menu |
-| `Super + Shift + B` | Bluetooth menu |
 
 
 ---
