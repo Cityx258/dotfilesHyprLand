@@ -25,7 +25,7 @@ sudo pacman -S hyprland waybar rofi kitty mako \
                awww polkit-gnome gnome-keyring \
                pipewire wireplumber pavucontrol \
                qt5ct qt6ct kvantum-qt5 kvantum \
-               papirus-icon-theme adw-gtk-theme \
+               papirus-icon-theme \
                fastfetch grim slurp \
                playerctl brightnessctl dolphin \
                networkmanager bluez bluez-utils \
@@ -35,7 +35,7 @@ sudo pacman -S hyprland waybar rofi kitty mako \
 yay -S adw-gtk3 better-miku-cursor candy-icons
 ```
 
-> **Note:** `awww` is used for wallpaper rendering. `better-miku-cursor` and `candy-icons` are AUR packages.
+> **Note:** `awww` is used for wallpaper rendering. `adw-gtk3`, `better-miku-cursor`, and `candy-icons` are AUR packages.
 
 ---
 
@@ -58,7 +58,7 @@ yay -S adw-gtk3 better-miku-cursor candy-icons
 │   └── style.css           # Bar styling
 ├── rofi/
 │   ├── config.rasi         # Rofi behavior & font
-│   ├── PowerMenu.sh        # Power menu (lock, reboot, shutdown)
+│   ├── PowerMenu.sh        # Power menu (logout, suspend, reboot, shutdown)
 │   ├── WallpaperSwapper.sh # Live wallpaper picker
 │   └── theme.rasi          # Custom theme
 ├── kitty/
@@ -117,7 +117,7 @@ chmod +x ~/.config/rofi/*.sh
 
 ### 5. Set up your wallpaper
 
-The config expects a wallpaper at `~/Wallpapers/FrierenForest.jpeg`. Either put your wallpaper there or edit `~/.config/hypr/autostart.conf` to point to your own:
+The config expects a wallpaper at `~/Wallpapers/FrierenNature.jpeg`. Either put your wallpaper there or edit `~/.config/hypr/autostart.conf` to point to your own:
 
 ```ini
 exec-once = awww img ~/Wallpapers/YourWallpaper.jpg
