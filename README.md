@@ -128,7 +128,7 @@ exec-once = awww img ~/Wallpapers/YourWallpaper.jpg
 The fastfetch config uses a custom image via `kitty-direct`. Either place your image at the path in the config or update it:
 
 ```json
-"source": "/home/YOUR_USERNAME/Fastfetch-Images/your-image.png"
+"source": "~/Fastfetch-Images/your-image.png"
 ```
 
 ### 7. Apply Qt theming
