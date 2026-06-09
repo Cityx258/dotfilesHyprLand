@@ -39,9 +39,8 @@ launch. When it finishes, log out and pick **Hyprland** from your display manage
   is **moved into a timestamped backup** (`~/.config-backup-<timestamp>/`), never
   overwritten in place.
 - **Installs assets** — copies the bundled wallpapers to `~/Wallpapers` and the
-  fastfetch images to `~/Fastfetch-Images` (existing files of yours are kept).
-- **Fixes paths** — points `autostart.conf` at a real wallpaper and the fastfetch
-  config at a real image, so nothing is broken out of the box.
+  fastfetch images to `~/Fastfetch-Images` (existing files of yours are kept). The
+  configs reference these out of the box, so the wallpaper and fetch image just work.
 - **Enables services** — optionally enables NetworkManager and Bluetooth.
 - Marks the rofi scripts executable and prints clear next steps at the end.
 
@@ -119,12 +118,8 @@ cp -rn Wallpapers/.       ~/Wallpapers/
 cp -rn Fastfetch-Images/. ~/Fastfetch-Images/
 ```
 
-Then point the configs at real files:
+Then finish setup:
 
-- **Wallpaper** — edit `~/.config/hypr/autostart.conf` so the `awww img` line points
-  at a wallpaper you have, e.g. `exec-once = awww img ~/Wallpapers/FrierenBattleField.webp`
-- **Fastfetch image** — edit the `"source"` field in `~/.config/fastfetch/config.jsonc`
-  to point at an image in `~/Fastfetch-Images/`.
 - **Qt theming** — open `qt5ct`/`qt6ct`, set the style to **Kvantum**, then apply a
   theme in `kvantummanager`.
 - **Monitors** — edit `~/.config/hypr/monitors.conf` to match your displays

@@ -187,54 +187,7 @@ deploy_assets "Wallpapers"
 deploy_assets "Fastfetch-Images"
 
 # ---------------------------------------------------------------------------
-# 4. Fix referenced asset paths so the rice works out of the box
-# ---------------------------------------------------------------------------
-# autostart.conf points at ~/Wallpapers/FrierenNature.jpeg, which isn't shipped.
-# fastfetch config.jsonc points at ~/Fastfetch-Images/frieren-tea.png, also not shipped.
-# Point them at real files (only edits real copies, not symlinks).
-fix_references() {
-    local autostart="$CONFIG_DIR/hypr/autostart.conf"
-    local ffconfig="$CONFIG_DIR/fastfetch/config.jsonc"
-
-    if [[ -f "$autostart" && ! -L "$CONFIG_DIR/hypr" ]]; then
-        local wp
-        # Prefer one of the wallpapers this repo ships (keeps the theme intact);
-        # otherwise fall back to the first wallpaper in ~/Wallpapers.
-        # Capture sorted lists and take the first line — avoid `| head`, which
-        # closes the pipe early and can SIGPIPE `sort` (141) -> pipefail+set -e abort.
-        wp="$(find "$REPO_DIR/Wallpapers" -maxdepth 1 -type f \
-              \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) \
-              -printf "$HOME/Wallpapers/%f\n" 2>/dev/null | sort)"
-        wp="${wp%%$'\n'*}"
-        if [[ -z "$wp" || ! -f "$wp" ]]; then
-            wp="$(find "$HOME/Wallpapers" -maxdepth 1 -type f \
-                  \( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' \) \
-                  2>/dev/null | sort)"
-            wp="${wp%%$'\n'*}"
-        fi
-        if [[ -n "$wp" && ! -f "$HOME/Wallpapers/FrierenNature.jpeg" ]]; then
-            sed -i "s|~/Wallpapers/FrierenNature.jpeg|${wp/#$HOME/~}|" "$autostart"
-            ok "Set default wallpaper -> ${wp/#$HOME/~}"
-        fi
-    fi
-
-    if [[ -f "$ffconfig" && ! -L "$CONFIG_DIR/fastfetch" ]]; then
-        if [[ ! -f "$HOME/Fastfetch-Images/frieren-tea.png" ]]; then
-            local img
-            img="$(find "$HOME/Fastfetch-Images" -maxdepth 1 -type f -iname '*.png' \
-                   2>/dev/null | sort)"
-            img="${img%%$'\n'*}"
-            if [[ -n "$img" ]]; then
-                sed -i "s|~/Fastfetch-Images/frieren-tea.png|${img/#$HOME/~}|" "$ffconfig"
-                ok "Set fastfetch image -> ${img/#$HOME/~}"
-            fi
-        fi
-    fi
-}
-fix_references
-
-# ---------------------------------------------------------------------------
-# 5. Services
+# 4. Services
 # ---------------------------------------------------------------------------
 if (( DO_PACKAGES )) && command -v systemctl >/dev/null 2>&1; then
     if confirm "Enable NetworkManager and Bluetooth services"; then
