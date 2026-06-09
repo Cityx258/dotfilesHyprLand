@@ -1,0 +1,30 @@
+@import "theme.rasi"
+
+/* Grid of large wallpaper previews. Reuses colors from theme.rasi. */
+
+window {
+    width:              900px;
+}
+
+listview {
+    columns:            3;
+    lines:              3;
+    spacing:            12px;
+    flow:               horizontal;
+}
+
+element {
+    orientation:        vertical;
+    padding:            8px;
+    spacing:            6px;
+    children:           [ element-icon, element-text ];
+}
+
+element-icon {
+    size:               220px;
+    horizontal-align:   0.5;
+}
+
+element-text {
+    horizontal-align:   0.5;
+}
