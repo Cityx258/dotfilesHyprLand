@@ -13,10 +13,6 @@ A nature-themed Hyprland rice for Arch Linux. Forest greens, blur, smooth animat
 ![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260408-193608.png)
 ![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260408-193805.png)
 ![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260505-011205.png)
-![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260604-164917.png)
-![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260605-105157.png)
-![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260609-140830.png)
-![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260609-152708.png)
 
 ---
 
@@ -258,10 +254,63 @@ Run `hyprctl monitors` to see your available outputs.
 
 ## 🎛 Customizing
 
-- **Wallpaper** — change it live with `Super + Shift + W` (the rofi wallpaper picker),
-  or edit the `awww img` line in `~/.config/hypr/autostart.conf` for the boot default.
-- **Fastfetch image** — swap the `"source"` path in `~/.config/fastfetch/config.jsonc`.
-- **Theme colors** — borders, blur, and rounding live in `~/.config/hypr/look.conf`.
+Everything here is plain text config, so making the rice your own is mostly a matter of
+swapping colors and a few numbers. Nothing is generated or hidden.
 
 > Tip: run `./install.sh --link` to symlink the configs instead of copying, so editing
-> the files in this repo (and `git pull`) updates your live setup directly.
+> the files in this repo (and `git pull`) updates your live setup directly. Otherwise
+> edit the deployed copies under `~/.config/` and reload with `hyprctl reload`.
+
+### Recolor it
+
+The palette is forest green (`#5a9e4a` / `#88c057` accents on a near-black `#0f160f`
+base). To take it somewhere else — like the alternate looks in the
+[gallery below](#-make-it-your-own) — swap those values everywhere they appear:
+
+| What | File | Look for |
+|---|---|---|
+| Window borders | `hypr/look.conf` | `col.active_border` / `col.inactive_border` |
+| Bar colors | `waybar/style.css` | `background`, `color`, the `#workspaces` rules |
+| Terminal palette | `kitty/kitty.conf` | `foreground` / `background` / `color0`–`color15` |
+| Notifications | `mako/config` | `background-color`, `text-color`, `border-color` |
+| Launcher / menus | `rofi/theme.rasi` | the `*` block: `fg`, `accent`, `urgent`, `bg` |
+
+`rofi/theme.rasi` is the easiest starting point — it defines named color variables at the
+top that the rest of the theme references, so changing `accent` recolors the whole menu.
+
+### Feel & layout
+
+- **Gaps, borders, rounding, blur, opacity, shadows** all live in `hypr/look.conf`.
+- **Animations** (speed, curves) are in `hypr/animations.conf`.
+- **Window placement rules** are in `hypr/windowrules.conf`.
+- **Keybinds** are in `hypr/keybinds.conf` (see the [table above](#️-keybinds)).
+
+### Wallpaper & fetch image
+
+- **Wallpaper** — change it live with `Super + Shift + W` (the rofi wallpaper picker),
+  or edit the `awww img` line in `hypr/autostart.conf` for the boot default. Drop your
+  own images in `~/Wallpapers/`.
+- **Fastfetch image** — swap the `"source"` path in `fastfetch/config.jsonc`; put new
+  images in `~/Fastfetch-Images/`.
+
+### GTK / Qt / fonts / cursor
+
+- **GTK** theme, icons, cursor, and font are in `gtk-3.0/settings.ini` and
+  `gtk-4.0/settings.ini`.
+- **Qt** style is Kvantum — set it in `qt5ct`/`qt6ct` and theme it in `kvantummanager`.
+- **Font** is `JetBrainsMono Nerd Font` throughout; search for it across the configs to
+  change it everywhere.
+
+---
+
+## 🌈 Make it your own
+
+The whole rice is just colors, gaps, and blur in plain config files — so it's easy to
+take it somewhere completely different. Here's the same setup recolored into an entirely
+different palette, as a taste of what you can do with `look.conf`, the GTK/Qt themes, and
+your own wallpapers:
+
+![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260604-164917.png)
+![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260605-105157.png)
+![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260609-140830.png)
+![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260609-152708.png)
