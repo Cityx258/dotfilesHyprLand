@@ -14,14 +14,88 @@ A nature-themed Hyprland rice for Arch Linux. Forest greens, blur, smooth animat
 ![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260408-193805.png)
 ![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260505-011205.png)
 
+---
 
-## 📦 Packages
-
-Install everything you need in one shot:
+## 🚀 Quick start
 
 ```bash
-# Core
-sudo pacman -S hyprland waybar rofi kitty mako \
+git clone https://github.com/Cityx258/dotfilesHyprLand.git ~/dotfilesHyprLand
+cd ~/dotfilesHyprLand
+./install.sh
+```
+
+That's it. The installer does everything for you — installs packages, deploys the
+configs, drops in the wallpapers, and wires up the paths so the rice works on first
+launch. When it finishes, log out and pick **Hyprland** from your display manager.
+
+> Don't run it as root — it installs into your own home directory and uses `sudo`
+> only for the package/service steps, prompting for your password when needed.
+
+### What the installer does
+
+- **Installs packages** — all the repo packages via `pacman --needed`, plus the AUR
+  ones if `yay` or `paru` is found (skips this if you decline the prompt).
+- **Deploys configs** — copies every config into `~/.config`. Anything already there
+  is **moved into a timestamped backup** (`~/.config-backup-<timestamp>/`), never
+  overwritten in place.
+- **Installs assets** — copies the bundled wallpapers to `~/Wallpapers` and the
+  fastfetch images to `~/Fastfetch-Images` (existing files of yours are kept).
+- **Fixes paths** — points `autostart.conf` at a real wallpaper and the fastfetch
+  config at a real image, so nothing is broken out of the box.
+- **Enables services** — optionally enables NetworkManager and Bluetooth.
+- Marks the rofi scripts executable and prints clear next steps at the end.
+
+### Options
+
+```bash
+./install.sh [options]
+```
+
+| Option | Effect |
+|---|---|
+| `--no-packages` | Skip package installation; just deploy the configs |
+| `--link` | Symlink the configs instead of copying (so `git pull` updates them live) |
+| `--no-backup` | Overwrite existing configs without backing them up first |
+| `-y`, `--yes` | Assume "yes" to every prompt (non-interactive) |
+| `-h`, `--help` | Show usage |
+
+---
+
+## ♻️ Restoring your old configs
+
+`install.sh` moves whatever was in `~/.config` into a timestamped
+`~/.config-backup-<timestamp>/` folder before deploying. To put the originals back:
+
+```bash
+./restore.sh --list          # show available backups and what's inside the newest
+./restore.sh                 # restore everything from the newest backup
+./restore.sh hypr waybar     # restore only specific configs
+./restore.sh --from ~/.config-backup-20260101-120000   # restore from a specific backup
+```
+
+Before overwriting, `restore.sh` sets your *current* configs aside in
+`~/.config-prerestore-<timestamp>/`, so the restore is itself reversible.
+
+| Option | Effect |
+|---|---|
+| `--from DIR` | Restore from a specific backup dir (default: the newest) |
+| `--list` | List available backups and exit |
+| `--no-backup` | Don't set the current configs aside before overwriting |
+| `-y`, `--yes` | Assume "yes" to every prompt |
+| `-h`, `--help` | Show usage |
+
+---
+
+## 🛠 Manual installation
+
+Prefer to do it by hand? The installer just automates these steps.
+
+<details>
+<summary>Show manual steps</summary>
+
+```bash
+# 1. Install packages
+sudo pacman -S --needed hyprland waybar rofi kitty mako \
                awww polkit-gnome gnome-keyring \
                pipewire wireplumber pavucontrol \
                qt5ct qt6ct kvantum-qt5 kvantum \
@@ -32,16 +106,61 @@ sudo pacman -S hyprland waybar rofi kitty mako \
                ttf-jetbrains-mono-nerd noto-fonts
 
 # AUR (use yay or paru)
-yay -S adw-gtk3 better-miku-cursor candy-icons
+yay -S --needed adw-gtk3 candy-icons
+
+# 2. Deploy configs
+for d in hypr waybar rofi kitty mako fastfetch gtk-3.0 gtk-4.0 qt5ct qt6ct; do
+    cp -r "$d" ~/.config/
+done
+chmod +x ~/.config/rofi/*.sh
+
+# 3. Copy assets
+cp -rn Wallpapers/.       ~/Wallpapers/
+cp -rn Fastfetch-Images/. ~/Fastfetch-Images/
 ```
 
-> **Note:** `awww` is used for wallpaper rendering. `adw-gtk3`, `better-miku-cursor`, and `candy-icons` are AUR packages.
+Then point the configs at real files:
+
+- **Wallpaper** — edit `~/.config/hypr/autostart.conf` so the `awww img` line points
+  at a wallpaper you have, e.g. `exec-once = awww img ~/Wallpapers/FrierenBattleField.webp`
+- **Fastfetch image** — edit the `"source"` field in `~/.config/fastfetch/config.jsonc`
+  to point at an image in `~/Fastfetch-Images/`.
+- **Qt theming** — open `qt5ct`/`qt6ct`, set the style to **Kvantum**, then apply a
+  theme in `kvantummanager`.
+- **Monitors** — edit `~/.config/hypr/monitors.conf` to match your displays
+  (see [Monitors](#-monitors)).
+
+Finally, log out and select Hyprland from your display manager, or run `Hyprland`.
+
+</details>
+
+---
+
+## 📦 Packages
+
+The installer pulls these in for you; listed here for reference.
+
+**Repo (pacman):**
+`hyprland` `waybar` `rofi` `kitty` `mako` `awww` `polkit-gnome` `gnome-keyring`
+`pipewire` `wireplumber` `pavucontrol` `qt5ct` `qt6ct` `kvantum-qt5` `kvantum`
+`papirus-icon-theme` `fastfetch` `grim` `slurp` `playerctl` `brightnessctl` `dolphin`
+`networkmanager` `bluez` `bluez-utils` `ttf-jetbrains-mono-nerd` `noto-fonts`
+
+**AUR (yay/paru):** `adw-gtk3` `candy-icons`
+
+> **Notes:** `awww` renders the wallpaper. For the cursor in the theme table below,
+> install `better-miku-cursor` from the AUR as well (optional).
 
 ---
 
 ## 🗂 Structure
 
 ```
+dotfilesHyprLand/
+├── install.sh              # One-shot installer
+├── restore.sh              # Restore backed-up configs
+└── (configs below get deployed to ~/.config/)
+
 ~/.config/
 ├── hypr/
 │   ├── hyprland.conf       # Entry point — sources all modules
@@ -75,72 +194,6 @@ yay -S adw-gtk3 better-miku-cursor candy-icons
 │   └── qt5ct.conf
 └── qt6ct/
     └── qt6ct.conf
-```
-
----
-
-## 🚀 Installation
-
-### 1. Clone the repo
-
-```bash
-git clone https://github.com/Cityx258/dotfilesHyprLand.git ~/dotfilesHyprLand
-cd ~/dotfilesHyprLand
-```
-
-### 2. Back up your existing configs (optional)
-
-```bash
-cp -r ~/.config/hypr ~/.config/hypr.bak
-```
-
-### 3. Copy configs
-
-```bash
-cp -r hypr        ~/.config/hypr
-cp -r waybar      ~/.config/waybar
-cp -r rofi        ~/.config/rofi
-cp -r kitty       ~/.config/kitty
-cp -r mako        ~/.config/mako
-cp -r fastfetch   ~/.config/fastfetch
-cp -r gtk-3.0     ~/.config/gtk-3.0
-cp -r gtk-4.0     ~/.config/gtk-4.0
-cp -r qt5ct       ~/.config/qt5ct
-cp -r qt6ct       ~/.config/qt6ct
-```
-
-### 4. Make rofi scripts executable
-
-```bash
-chmod +x ~/.config/rofi/*.sh
-```
-
-### 5. Set up your wallpaper
-
-The config expects a wallpaper at `~/Wallpapers/FrierenNature.jpeg`. Either put your wallpaper there or edit `~/.config/hypr/autostart.conf` to point to your own:
-
-```ini
-exec-once = awww img ~/Wallpapers/YourWallpaper.jpg
-```
-
-### 6. Set up fastfetch image (optional)
-
-The fastfetch config uses a custom image via `kitty-direct`. Either place your image at the path in the config or update it:
-
-```json
-"source": "/home/YOUR_USERNAME/Fastfetch-Images/your-image.png"
-```
-
-### 7. Apply Qt theming
-
-Open `qt5ct` and `qt6ct` and set the style to **Kvantum**. Then open `kvantummanager` and apply a theme.
-
-### 8. Log in to Hyprland
-
-Select Hyprland from your display manager, or launch it with:
-
-```bash
-Hyprland
 ```
 
 ---
@@ -201,3 +254,15 @@ monitor = YOUR_OUTPUT, WIDTHxHEIGHT@RATE, XOFFSETxYOFFSET, SCALE
 ```
 
 Run `hyprctl monitors` to see your available outputs.
+
+---
+
+## 🎛 Customizing
+
+- **Wallpaper** — change it live with `Super + Shift + W` (the rofi wallpaper picker),
+  or edit the `awww img` line in `~/.config/hypr/autostart.conf` for the boot default.
+- **Fastfetch image** — swap the `"source"` path in `~/.config/fastfetch/config.jsonc`.
+- **Theme colors** — borders, blur, and rounding live in `~/.config/hypr/look.conf`.
+
+> Tip: run `./install.sh --link` to symlink the configs instead of copying, so editing
+> the files in this repo (and `git pull`) updates your live setup directly.
