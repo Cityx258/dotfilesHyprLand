@@ -220,6 +220,7 @@ dotfilesHyprLand/
 | `XF86Media*` | Playerctl (play/pause/next/prev) |
 | `Ctrl + Alt + Delete` | Power menu |
 | `Super + Shift + W` | Wallpaper swapper |
+| `Super + L` | Lock screen |
 
 
 ---
