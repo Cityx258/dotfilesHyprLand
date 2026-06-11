@@ -30,7 +30,7 @@ PACMAN_PKGS=(
     awww polkit-gnome gnome-keyring
     pipewire wireplumber pavucontrol
     qt5ct qt6ct kvantum-qt5 kvantum
-    papirus-icon-theme
+    papirus-icon-theme hyprlock
     fastfetch grim slurp
     playerctl brightnessctl dolphin
     networkmanager bluez bluez-utils
