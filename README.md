@@ -14,14 +14,87 @@ A nature-themed Hyprland rice for Arch Linux. Forest greens, blur, smooth animat
 ![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260408-193805.png)
 ![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260505-011205.png)
 
+---
 
-## 📦 Packages
-
-Install everything you need in one shot:
+## 🚀 Quick start
 
 ```bash
-# Core
-sudo pacman -S hyprland waybar rofi kitty mako \
+git clone https://github.com/Cityx258/dotfilesHyprLand.git ~/dotfilesHyprLand
+cd ~/dotfilesHyprLand
+./install.sh
+```
+
+That's it. The installer does everything for you — installs packages, deploys the
+configs, drops in the wallpapers, and wires up the paths so the rice works on first
+launch. When it finishes, log out and pick **Hyprland** from your display manager.
+
+> Don't run it as root — it installs into your own home directory and uses `sudo`
+> only for the package/service steps, prompting for your password when needed.
+
+### What the installer does
+
+- **Installs packages** — all the repo packages via `pacman --needed`, plus the AUR
+  ones if `yay` or `paru` is found (skips this if you decline the prompt).
+- **Deploys configs** — copies every config into `~/.config`. Anything already there
+  is **moved into a timestamped backup** (`~/.config-backup-<timestamp>/`), never
+  overwritten in place.
+- **Installs assets** — copies the bundled wallpapers to `~/Wallpapers` and the
+  fastfetch images to `~/Fastfetch-Images` (existing files of yours are kept). The
+  configs reference these out of the box, so the wallpaper and fetch image just work.
+- **Enables services** — optionally enables NetworkManager and Bluetooth.
+- Marks the rofi scripts executable and prints clear next steps at the end.
+
+### Options
+
+```bash
+./install.sh [options]
+```
+
+| Option | Effect |
+|---|---|
+| `--no-packages` | Skip package installation; just deploy the configs |
+| `--link` | Symlink the configs instead of copying (so `git pull` updates them live) |
+| `--no-backup` | Overwrite existing configs without backing them up first |
+| `-y`, `--yes` | Assume "yes" to every prompt (non-interactive) |
+| `-h`, `--help` | Show usage |
+
+---
+
+## ♻️ Restoring your old configs
+
+`install.sh` moves whatever was in `~/.config` into a timestamped
+`~/.config-backup-<timestamp>/` folder before deploying. To put the originals back:
+
+```bash
+./restore.sh --list          # show available backups and what's inside the newest
+./restore.sh                 # restore everything from the newest backup
+./restore.sh hypr waybar     # restore only specific configs
+./restore.sh --from ~/.config-backup-20260101-120000   # restore from a specific backup
+```
+
+Before overwriting, `restore.sh` sets your *current* configs aside in
+`~/.config-prerestore-<timestamp>/`, so the restore is itself reversible.
+
+| Option | Effect |
+|---|---|
+| `--from DIR` | Restore from a specific backup dir (default: the newest) |
+| `--list` | List available backups and exit |
+| `--no-backup` | Don't set the current configs aside before overwriting |
+| `-y`, `--yes` | Assume "yes" to every prompt |
+| `-h`, `--help` | Show usage |
+
+---
+
+## 🛠 Manual installation
+
+Prefer to do it by hand? The installer just automates these steps.
+
+<details>
+<summary>Show manual steps</summary>
+
+```bash
+# 1. Install packages
+sudo pacman -S --needed hyprland waybar rofi kitty mako \
                awww polkit-gnome gnome-keyring \
                pipewire wireplumber pavucontrol \
                qt5ct qt6ct kvantum-qt5 kvantum \
@@ -32,16 +105,57 @@ sudo pacman -S hyprland waybar rofi kitty mako \
                ttf-jetbrains-mono-nerd noto-fonts
 
 # AUR (use yay or paru)
-yay -S adw-gtk3 better-miku-cursor candy-icons
+yay -S --needed adw-gtk3 candy-icons
+
+# 2. Deploy configs
+for d in hypr waybar rofi kitty mako fastfetch gtk-3.0 gtk-4.0 qt5ct qt6ct; do
+    cp -r "$d" ~/.config/
+done
+chmod +x ~/.config/rofi/*.sh
+
+# 3. Copy assets
+cp -rn Wallpapers/.       ~/Wallpapers/
+cp -rn Fastfetch-Images/. ~/Fastfetch-Images/
 ```
 
-> **Note:** `awww` is used for wallpaper rendering. `adw-gtk3`, `better-miku-cursor`, and `candy-icons` are AUR packages.
+Then finish setup:
+
+- **Qt theming** — open `qt5ct`/`qt6ct`, set the style to **Kvantum**, then apply a
+  theme in `kvantummanager`.
+- **Monitors** — edit `~/.config/hypr/monitors.conf` to match your displays
+  (see [Monitors](#-monitors)).
+
+Finally, log out and select Hyprland from your display manager, or run `Hyprland`.
+
+</details>
+
+---
+
+## 📦 Packages
+
+The installer pulls these in for you; listed here for reference.
+
+**Repo (pacman):**
+`hyprland` `waybar` `rofi` `kitty` `mako` `awww` `polkit-gnome` `gnome-keyring`
+`pipewire` `wireplumber` `pavucontrol` `qt5ct` `qt6ct` `kvantum-qt5` `kvantum`
+`papirus-icon-theme` `fastfetch` `grim` `slurp` `playerctl` `brightnessctl` `dolphin`
+`networkmanager` `bluez` `bluez-utils` `ttf-jetbrains-mono-nerd` `noto-fonts`
+
+**AUR (yay/paru):** `adw-gtk3` `candy-icons`
+
+> **Notes:** `awww` renders the wallpaper. For the cursor in the theme table below,
+> install `better-miku-cursor` from the AUR as well (optional).
 
 ---
 
 ## 🗂 Structure
 
 ```
+dotfilesHyprLand/
+├── install.sh              # One-shot installer
+├── restore.sh              # Restore backed-up configs
+└── (configs below get deployed to ~/.config/)
+
 ~/.config/
 ├── hypr/
 │   ├── hyprland.conf       # Entry point — sources all modules
@@ -79,72 +193,6 @@ yay -S adw-gtk3 better-miku-cursor candy-icons
 
 ---
 
-## 🚀 Installation
-
-### 1. Clone the repo
-
-```bash
-git clone https://github.com/Cityx258/dotfilesHyprLand.git ~/dotfilesHyprLand
-cd ~/dotfilesHyprLand
-```
-
-### 2. Back up your existing configs (optional)
-
-```bash
-cp -r ~/.config/hypr ~/.config/hypr.bak
-```
-
-### 3. Copy configs
-
-```bash
-cp -r hypr        ~/.config/hypr
-cp -r waybar      ~/.config/waybar
-cp -r rofi        ~/.config/rofi
-cp -r kitty       ~/.config/kitty
-cp -r mako        ~/.config/mako
-cp -r fastfetch   ~/.config/fastfetch
-cp -r gtk-3.0     ~/.config/gtk-3.0
-cp -r gtk-4.0     ~/.config/gtk-4.0
-cp -r qt5ct       ~/.config/qt5ct
-cp -r qt6ct       ~/.config/qt6ct
-```
-
-### 4. Make rofi scripts executable
-
-```bash
-chmod +x ~/.config/rofi/*.sh
-```
-
-### 5. Set up your wallpaper
-
-The config expects a wallpaper at `~/Wallpapers/FrierenNature.jpeg`. Either put your wallpaper there or edit `~/.config/hypr/autostart.conf` to point to your own:
-
-```ini
-exec-once = awww img ~/Wallpapers/YourWallpaper.jpg
-```
-
-### 6. Set up fastfetch image (optional)
-
-The fastfetch config uses a custom image via `kitty-direct`. Either place your image at the path in the config or update it:
-
-```json
-"source": "~/Fastfetch-Images/your-image.png"
-```
-
-### 7. Apply Qt theming
-
-Open `qt5ct` and `qt6ct` and set the style to **Kvantum**. Then open `kvantummanager` and apply a theme.
-
-### 8. Log in to Hyprland
-
-Select Hyprland from your display manager, or launch it with:
-
-```bash
-Hyprland
-```
-
----
-
 ## ⌨️ Keybinds
 
 | Keybind | Action |
@@ -172,6 +220,7 @@ Hyprland
 | `XF86Media*` | Playerctl (play/pause/next/prev) |
 | `Ctrl + Alt + Delete` | Power menu |
 | `Super + Shift + W` | Wallpaper swapper |
+| `Super + L` | Lock screen |
 
 
 ---
@@ -201,3 +250,68 @@ monitor = YOUR_OUTPUT, WIDTHxHEIGHT@RATE, XOFFSETxYOFFSET, SCALE
 ```
 
 Run `hyprctl monitors` to see your available outputs.
+
+---
+
+## 🎛 Customizing
+
+Everything here is plain text config, so making the rice your own is mostly a matter of
+swapping colors and a few numbers. Nothing is generated or hidden.
+
+> Tip: run `./install.sh --link` to symlink the configs instead of copying, so editing
+> the files in this repo (and `git pull`) updates your live setup directly. Otherwise
+> edit the deployed copies under `~/.config/` and reload with `hyprctl reload`.
+
+### Recolor it
+
+The palette is forest green (`#5a9e4a` / `#88c057` accents on a near-black `#0f160f`
+base). To take it somewhere else — like the alternate looks in the
+[gallery below](#-make-it-your-own) — swap those values everywhere they appear:
+
+| What | File | Look for |
+|---|---|---|
+| Window borders | `hypr/look.conf` | `col.active_border` / `col.inactive_border` |
+| Bar colors | `waybar/style.css` | `background`, `color`, the `#workspaces` rules |
+| Terminal palette | `kitty/kitty.conf` | `foreground` / `background` / `color0`–`color15` |
+| Notifications | `mako/config` | `background-color`, `text-color`, `border-color` |
+| Launcher / menus | `rofi/theme.rasi` | the `*` block: `fg`, `accent`, `urgent`, `bg` |
+
+`rofi/theme.rasi` is the easiest starting point — it defines named color variables at the
+top that the rest of the theme references, so changing `accent` recolors the whole menu.
+
+### Feel & layout
+
+- **Gaps, borders, rounding, blur, opacity, shadows** all live in `hypr/look.conf`.
+- **Animations** (speed, curves) are in `hypr/animations.conf`.
+- **Window placement rules** are in `hypr/windowrules.conf`.
+- **Keybinds** are in `hypr/keybinds.conf` (see the [table above](#️-keybinds)).
+
+### Wallpaper & fetch image
+
+- **Wallpaper** — change it live with `Super + Shift + W` (the rofi wallpaper picker),
+  or edit the `awww img` line in `hypr/autostart.conf` for the boot default. Drop your
+  own images in `~/Wallpapers/`.
+- **Fastfetch image** — swap the `"source"` path in `fastfetch/config.jsonc`; put new
+  images in `~/Fastfetch-Images/`.
+
+### GTK / Qt / fonts / cursor
+
+- **GTK** theme, icons, cursor, and font are in `gtk-3.0/settings.ini` and
+  `gtk-4.0/settings.ini`.
+- **Qt** style is Kvantum — set it in `qt5ct`/`qt6ct` and theme it in `kvantummanager`.
+- **Font** is `JetBrainsMono Nerd Font` throughout; search for it across the configs to
+  change it everywhere.
+
+---
+
+## 🌈 Make it your own
+
+The whole rice is just colors, gaps, and blur in plain config files — so it's easy to
+take it somewhere completely different. Here's the same setup recolored into an entirely
+different palette, as a taste of what you can do with `look.conf`, the GTK/Qt themes, and
+your own wallpapers:
+
+![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260604-164917.png)
+![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260605-105157.png)
+![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260609-140830.png)
+![](https://raw.githubusercontent.com/Cityx258/dotfilesHyprLand/main/Screenshots/screenshot-20260609-152708.png)
