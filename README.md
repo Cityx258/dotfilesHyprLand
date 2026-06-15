@@ -304,6 +304,10 @@ top that the rest of the theme references, so changing `accent` recolors the who
 
 ---
 
+## Get a bunch of wallpaper here :
+
+https://github.com/orangci/walls-catppuccin-mocha
+
 ## 🌈 Make it your own
 
 The whole rice is just colors, gaps, and blur in plain config files — so it's easy to
