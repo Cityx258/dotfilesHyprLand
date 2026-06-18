@@ -34,7 +34,7 @@ PACMAN_PKGS=(
     fastfetch grim slurp
     playerctl brightnessctl dolphin
     networkmanager bluez bluez-utils
-    ttf-jetbrains-mono-nerd noto-fonts
+    ttf-jetbrains-mono-nerd noto-fonts zsh
 )
 
 # AUR packages
