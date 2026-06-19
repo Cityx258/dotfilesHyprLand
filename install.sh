@@ -38,7 +38,12 @@ PACMAN_PKGS=(
 )
 
 # AUR packages
-AUR_PKGS=(adw-gtk3 candy-icons)
+
+#uncomment the next line to install these packages from the AUR
+# AUR_PKGS=(adw-gtk3 candy-icons)
+
+#comment the next line to install the previous packages from the AUR
+AUR_PKGS=()
 
 # Options
 DO_PACKAGES=1
